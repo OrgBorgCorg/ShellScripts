@@ -1,20 +1,17 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# ShellScripts
+Some shell scripts partailly cause I'm bored and partailly cause I wan kinda interested in scripting.
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
-
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Scripts
+1. create_vm_prompt.sh --> QEMU VM Creation without using virt-manager
+2. start_vm.sh --> Start VM using virsh without having to use virt-manager
+3. usermanagement.sh -> Manager User(Add, Delete, Modify(sudo privileges))
+4. ccompnrun.sh --> Compile and Run C code (using gcc)
+5. dir_size.sh --> States the storage consumed by each file and folder in directory
+6. quick_notes.sh --> Jot down notes for when you might forget later with a timestamp(creates a .txt file)
+7. todo.sh --> To Do list with option to list, add and remove task (again creates a .txt file)
+8. ffmpeg_switch_case --> A menu based ffmpeg tool usage
+9. Git Helper --> just a mwnu based basic git operations
+10. unarch --> Recursively unzip all archives in a folder
+11. server.sh --> Restarts the server if the Flask application crashes
+12. kill.sh --> Kills all process and instances of enetered process cleanly
+13. aliasManager.sh --> A manager for ~/.bashrc aliases (view,modify,delete)
