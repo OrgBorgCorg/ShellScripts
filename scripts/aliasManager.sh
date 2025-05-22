@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function view_aliases {
-    echo "Current Aliases in ~/.bashrc:"
+    echo "Current Aliases in ~/.bashrc are listed as so:"
     grep '^alias ' ~/.bashrc || echo "No aliases found."
     echo
 }
