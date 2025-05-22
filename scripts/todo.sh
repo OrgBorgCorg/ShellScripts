@@ -16,7 +16,7 @@ case "$1" in
     echo "Done/Removed: $2"
     ;;
   *)
-    echo "Usage: $0 {add|list|remove} [task]"
+    echo "Uage: $0 {add|list|remove} [task]"
     ;;
 esac
 
