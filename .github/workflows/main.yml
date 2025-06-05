@@ -1,4 +1,3 @@
-# .github/workflows/sync-to-ado.yml
 name: Mirror to Azure DevOps
 
 on:
@@ -16,7 +15,7 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout full history
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -27,22 +26,23 @@ jobs:
           git config --global user.name "OrgBorgCorg"
           git config --global user.email "ivanjaison@gmail.com"
 
-      - name: Fetch and recreate all branches locally
-        run: |
-          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-          for branch in $(git branch -r | grep origin/ | grep -v '\->' | sed 's|origin/||'); do
-            git checkout -B "$branch" "origin/$branch"
-          done
-
       - name: Add ADO Remote
         run: |
           git remote add ado https://:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts || \
           git remote set-url ado https://:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts
 
-      - name: Push all branches to ADO
+      - name: Push changes to ADO (on push event)
+        if: github.event_name == 'push'
         run: |
+          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
+          for branch in $(git branch -r | grep origin/ | grep -v '\->' | sed 's|origin/||'); do
+            git checkout -B "$branch" "origin/$branch"
+          done
           git push --verbose ado --all --force
           git push --verbose ado --tags --force
 
-      - name: Show branches pushed to ADO (debug)
-        run: git ls-remote --heads ado
+      - name: Delete branch from ADO (on delete event)
+        if: github.event_name == 'delete' && github.event.ref_type == 'branch'
+        run: |
+          echo "Deleting branch: ${{ github.event.ref }}"
+          git push ado --delete "${{ github.event.ref }}"
