@@ -3,24 +3,30 @@ name: Mirror to Azure DevOps
 
 on:
   push:
-    branches: [ main, develop, feature/* ]
-    tags: ['*']
+    branches: [ main, develop, feature/** ]
+    tags:
+      - '**'
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Full history for mirroring
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed for full mirroring
 
-    - name: Configure Git
-      run: |
-        git config --global user.name "rdx40"
-        git config --global user.email "ivanjaison@gmail.com"
-        
-    - name: Mirror to ADO
-      run: |
-        git remote add ado https://${{ secrets.ADO_USERNAME }}:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts
-        git push --mirror --force ado
+      - name: Configure Git
+        run: |
+          git config --global user.name "rdx40"
+          git config --global user.email "ivanjaison@gmail.com"
+
+      - name: Add Azure DevOps Remote
+        run: |
+          git remote add ado https://${{ secrets.ADO_USERNAME }}:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts || \
+          git remote set-url ado https://${{ secrets.ADO_USERNAME }}:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts
+
+      - name: Push to Azure DevOps
+        run: |
+          git push ado --all --force
+          git push ado --tags --force
