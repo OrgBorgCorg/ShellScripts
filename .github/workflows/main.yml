@@ -1,0 +1,26 @@
+# .github/workflows/sync-to-ado.yml
+name: Mirror to Azure DevOps
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+    tags: ['*']
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Full history for mirroring
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "GitHub Mirror Bot"
+        git config --global user.email "github-mirror@yourcompany.com"
+        
+    - name: Mirror to ADO
+      run: |
+        git remote add ado https://${{ secrets.ADO_USERNAME }}:${{ secrets.ADO_PAT }}@dev.azure.com/your-org/your-project/_git/your-repo
+        git push --mirror --force ado
