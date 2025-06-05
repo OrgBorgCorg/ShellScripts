@@ -16,25 +16,33 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout full history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Configure Git
         run: |
           git config --global user.name "OrgBorgCorg"
           git config --global user.email "ivanjaison@gmail.com"
 
-      - name: Fetch All Branches
-        run: git fetch --all
+      - name: Fetch and recreate all branches locally
+        run: |
+          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
+          for branch in $(git branch -r | grep origin/ | grep -v '\->' | sed 's|origin/||'); do
+            git checkout -B "$branch" "origin/$branch"
+          done
 
       - name: Add ADO Remote
         run: |
           git remote add ado https://:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts || \
           git remote set-url ado https://:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts
 
-      - name: Push to ADO
+      - name: Push all branches to ADO
         run: |
-          git push ado --all --force
-          git push ado --tags --force
+          git push --verbose ado --all --force
+          git push --verbose ado --tags --force
+
+      - name: Show branches pushed to ADO (debug)
+        run: git ls-remote --heads ado
