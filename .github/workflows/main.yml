@@ -3,9 +3,14 @@ name: Mirror to Azure DevOps
 
 on:
   push:
-    branches: [ main, develop, feature/** ]
+    branches: [main, develop, feature/**]
     tags:
-      - '**'
+      - "**"
+  delete:
+    branches: [main, develop, feature/**]
+    tags:
+      - "**"
+  workflow_dispatch:
 
 jobs:
   mirror:
