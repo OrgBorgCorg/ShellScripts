@@ -14,19 +14,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # needed for full mirroring
+          fetch-depth: 0
 
       - name: Configure Git
         run: |
-          git config --global user.name "rdx40"
+          git config --global user.name "OrgBorgCorg"
           git config --global user.email "ivanjaison@gmail.com"
 
-      - name: Add Azure DevOps Remote
+      - name: Add ADO Remote
         run: |
-          git remote add ado https://${{ secrets.ADO_USERNAME }}:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts || \
-          git remote set-url ado https://${{ secrets.ADO_USERNAME }}:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts
+          git remote add ado https://:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts || \
+          git remote set-url ado https://:${{ secrets.ADO_PAT }}@dev.azure.com/ivanjmadathil/django-admin-jwt-test/_git/ShellScripts
 
-      - name: Push to Azure DevOps
+      - name: Push to ADO
         run: |
           git push ado --all --force
           git push ado --tags --force
