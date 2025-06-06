@@ -9,6 +9,11 @@ on:
     branches: [main, develop, feature/**]
     tags:
       - "**"
+  create:
+    branches: ['**']  # Catch branch creations
+  pull_request:
+    types: [opened, synchronize, reopened]
+  
   workflow_dispatch:
 
 jobs:
