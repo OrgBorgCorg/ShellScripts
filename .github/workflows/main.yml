@@ -41,8 +41,14 @@ jobs:
           git push --verbose ado --all --force
           git push --verbose ado --tags --force
 
-      - name: Delete branch from ADO (on delete event)
+      - name: Delete branch from ADO (on delete event - branch)
         if: github.event_name == 'delete' && github.event.ref_type == 'branch'
         run: |
           echo "Deleting branch: ${{ github.event.ref }}"
-          git push ado --delete "${{ github.event.ref }}"
+          git push ado --delete "refs/heads/${{ github.event.ref }}"
+
+      - name: Delete tag from ADO (on delete event - tag)
+        if: github.event_name == 'delete' && github.event.ref_type == 'tag'
+        run: |
+          echo "Deleting tag: ${{ github.event.ref }}"
+          git push ado --delete "refs/tags/${{ github.event.ref }}"
