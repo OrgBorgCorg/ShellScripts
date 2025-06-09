@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "Enter the name of the process you want to kill: " process_name
+read -p "Enter the Name of the process you want to kill: " process_name
 
 pid=$(pgrep -f "$process_name")
 
@@ -15,6 +15,6 @@ if [ "$confirm" = "y" ]; then
     kill -15 $pid
     echo "Process $process_name (PID $pid) killed."
 else
-    echo "Process $process_name not killed."
+    echo "Process $process_name has not killed."
 fi
 
