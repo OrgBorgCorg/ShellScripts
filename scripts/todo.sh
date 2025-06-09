@@ -13,10 +13,10 @@ case "$1" in
     ;;
   remove)
     sed -i.bak "/$2/d" "$TODO_FILE"
-    echo "Removed: $2"
+    echo "Done/Removed: $2"
     ;;
   *)
-    echo "Usage: $0 {add|list|remove} [task]"
+    echo "Uage: $0 {add|list|remove} [task]"
     ;;
 esac
 
