@@ -13,7 +13,7 @@ on:
     branches: ['**']  # Catch branch creations
   pull_request:
     types: [opened, synchronize, reopened]
-  
+
   workflow_dispatch:
 
 jobs:
@@ -59,7 +59,7 @@ jobs:
           # Convert JSON arrays to bash arrays
           readarray -t github_branches <<< $(echo '${{ steps.github-branches.outputs.github_branches }}' | jq -r '.[]')
           readarray -t ado_branches <<< $(echo '${{ steps.ado-branches.outputs.ado_branches }}' | jq -r '.[]')
-          
+
           # Find branches to delete
           for branch in "${ado_branches[@]}"; do
             if [[ ! " ${github_branches[@]} " =~ " ${branch} " ]]; then
