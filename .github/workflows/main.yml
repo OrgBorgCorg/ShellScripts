@@ -2,17 +2,19 @@ name: Mirror to Azure DevOps
 
 on:
   push:
-    branches: [main, master, release/**]
+    branches: [main, develop, release/**]
     tags:
       - "**"
   delete:
-    branches: [main, master, release/**]
+    branches: [main, develop, release/**]
     tags:
       - "**"
   create:
-    branches: [main, master, release/**]
+    branches: ["**"]
   pull_request:
+    branches: [main, master, release/**]
     types: [opened, synchronize, reopened]
+
   workflow_dispatch:
 
 jobs:
@@ -30,16 +32,9 @@ jobs:
           git config --global user.name "OrgBorgCorg"
           git config --global user.email "ivanjaison@gmail.com"
 
-      - name: Fetch only relevant branches
+      - name: Fetch and recreate all branches locally
         run: |
-          git fetch origin "+refs/heads/main:refs/remotes/origin/main"
-          git fetch origin "+refs/heads/master:refs/remotes/origin/master"
-          for branch in $(git ls-remote --heads origin | awk '{print $2}' | grep 'refs/heads/release/' | sed 's|refs/heads/||'); do
-            git fetch origin "+refs/heads/${branch}:refs/remotes/origin/${branch}"
-          done
-
-      - name: Checkout selected branches
-        run: |
+          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
           for branch in $(git branch -r | grep origin/ | grep -v '\->' | sed 's|origin/||'); do
             git checkout -B "$branch" "origin/$branch"
           done
@@ -62,8 +57,11 @@ jobs:
 
       - name: Delete removed branches from ADO
         run: |
+          # Convert JSON arrays to bash arrays
           readarray -t github_branches <<< $(echo '${{ steps.github-branches.outputs.github_branches }}' | jq -r '.[]')
           readarray -t ado_branches <<< $(echo '${{ steps.ado-branches.outputs.ado_branches }}' | jq -r '.[]')
+
+          # Find branches to delete
           for branch in "${ado_branches[@]}"; do
             if [[ ! " ${github_branches[@]} " =~ " ${branch} " ]]; then
               echo "Deleting branch $branch from ADO"
@@ -71,17 +69,10 @@ jobs:
             fi
           done
 
-      - name: Push selected branches to ADO
+      - name: Push all branches to ADO
         run: |
-          for branch in "${github_branches[@]}"; do
-            if [[ "$branch" == "main" || "$branch" == "master" || "$branch" == release/* ]]; then
-              echo "Pushing $branch to ADO"
-              git push ado "$branch:$branch" --force
-            fi
-          done
-
-      - name: Push tags
-        run: git push ado --tags --force
+          git push --verbose ado --all --force
+          git push --verbose ado --tags --force
 
       - name: Show branches pushed to ADO (debug)
         run: git ls-remote --heads ado
