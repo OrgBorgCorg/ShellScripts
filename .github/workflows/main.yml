@@ -2,11 +2,11 @@ name: Mirror to Azure DevOps
 
 on:
   push:
-    branches: [main, develop, release/**]
+    branches: [main, develop, release]
     tags:
       - "**"
   delete:
-    branches: [main, develop, release/**]
+    branches: [main, develop, release]
     tags:
       - "**"
   create:
