@@ -32,11 +32,15 @@ jobs:
           git config --global user.name "OrgBorgCorg"
           git config --global user.email "ivanjaison@gmail.com"
 
-      - name: Fetch and recreate all branches locally
+      - name: Fetch and recreate allowed branches locally
         run: |
           git fetch origin "+refs/heads/*:refs/remotes/origin/*"
           for branch in $(git branch -r | grep origin/ | grep -v '\->' | sed 's|origin/||'); do
-            git checkout -B "$branch" "origin/$branch"
+            if [[ "$branch" == "main" || "$branch" == "master" || "$branch" == release/* ]]; then
+              git checkout -B "$branch" "origin/$branch"
+            else
+              echo "Skipping branch $branch"
+            fi
           done
 
       - name: Add ADO Remote
