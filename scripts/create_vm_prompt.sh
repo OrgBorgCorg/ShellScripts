@@ -37,7 +37,7 @@ virt-install \
 
 # Check if VM was created successfully
 if [ $? -eq 0 ]; then
-    echo "Virtual machine '$VM_NAME' created successfully and saved in virt-manager."
+    echo "Virtual machine '$VM_NAME' has been created successfully and is saved in virt-manager."
 else
     echo "Failed to create virtual machine."
 fi
