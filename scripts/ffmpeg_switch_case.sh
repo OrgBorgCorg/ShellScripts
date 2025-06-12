@@ -7,7 +7,7 @@ show_menu() {
     echo "3) Resize Video"
     echo "4) Compress Video"
     echo "5) Create GIF from Video"
-    echo "6) Exit"
+    echo "6) Quit"
 }
 
 while true; do
