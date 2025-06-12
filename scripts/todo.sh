@@ -13,7 +13,7 @@ case "$1" in
     ;;
   remove)
     sed -i.bak "/$2/d" "$TODO_FILE"
-    echo "Removed: $2"
+    echo "eiliminated: $2"
     ;;
   *)
     echo "Usage: $0 {add|list|remove} [task]"
