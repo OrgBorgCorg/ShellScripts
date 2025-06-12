@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "What do you want to do?"
+echo "Wham you want to do?"
 echo "1. Status"
 echo "2. Add all"
 echo "3. Commit"
