@@ -7,6 +7,6 @@ DIR="$1"
 if [[ -d "$DIR" ]]; then
   du -sh "$DIR"/* | sort -hr
 else
-  echo "Please provide a valid directory."
+  echo "Please ensure a valid directory is provided."
 fi
 
