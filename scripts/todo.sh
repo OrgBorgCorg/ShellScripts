@@ -16,7 +16,7 @@ case "$1" in
     echo "eiliminated: $2"
     ;;
   *)
-    echo "Usage: $0 {add|list|remove} [task]"
+    echo "how to use: $0 {add|list|remove} [task]"
     ;;
 esac
 
